@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SetupScreen from './components/SetupScreen';
-import Worksheet from './components/Worksheet';
+import GameSheet from './components/GameSheet';
 import ResultsScreen from './components/ResultsScreen';
 import { GameConfig } from './types';
 
@@ -11,15 +11,35 @@ const App: React.FC = () => {
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
   const [config, setConfig] = useState<GameConfig | null>(null);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+
+  useEffect(() => {
+    if (gameState !== 'PLAYING' || timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          setGameState('RESULTS');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameState, timeLeft]);
 
   const handleStart = (newConfig: GameConfig) => {
     setConfig(newConfig);
     setGameState('PLAYING');
+    setScore(0);
+    setTotal(0);
+    setTimeLeft(300);
   };
 
-  const handleComplete = (finalScore: number, finalTotal: number) => {
+  const handleFinish = (finalScore: number, totalQuestions: number) => {
     setScore(finalScore);
-    setTotal(finalTotal);
+    setTotal(totalQuestions);
     setGameState('RESULTS');
   };
 
@@ -28,18 +48,45 @@ const App: React.FC = () => {
     setScore(0);
     setTotal(0);
     setConfig(null);
+    setTimeLeft(300);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-yellow-100">
       {gameState === 'SETUP' && (
         <SetupScreen onStart={handleStart} />
       )}
       {gameState === 'PLAYING' && config && (
-        <Worksheet config={config} onComplete={handleComplete} />
+        <>
+          <div className="sticky top-0 z-50 bg-yellow-50 border-b-4 border-yellow-400 p-4 flex justify-between items-center shadow-md">
+            <div className="text-sm text-gray-600 font-semibold">... Vissza</div>
+            <div className="text-2xl font-bold text-blue-600">⏱ {formatTime(timeLeft)}</div>
+            <button
+              onClick={() => handleFinish(score, total || 1)}
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition"
+            >
+              ✓ Kész!
+            </button>
+          </div>
+          <GameSheet
+            config={config}
+            onFinish={handleFinish}
+            timeLeft={timeLeft}
+          />
+        </>
       )}
       {gameState === 'RESULTS' && (
-        <ResultsScreen score={score} total={total} onRestart={handleRestart} />
+        <ResultsScreen
+          score={score}
+          total={total}
+          onRestart={handleRestart}
+        />
       )}
     </div>
   );
