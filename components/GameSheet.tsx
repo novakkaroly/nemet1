@@ -17,9 +17,26 @@ interface GameSheetProps {
 
 const GameSheet: React.FC<GameSheetProps> = ({ config, onFinish }) => {
   const allQuestions: Question[] = [
-    { id: 1, subject: 'Es', blank: '...', hint: '(spielen)', correctAnswer: 'spielst' },
-    { id: 2, subject: 'Wir', blank: '...', hint: '(lernen)', correctAnswer: 'lernen' },
-    { id: 3, subject: 'Sie', blank: '... gern.', hint: '(kaufen)', correctAnswer: 'kauft' },
+    { id: 1, subject: 'Es', blank: '...', hint: '(spielen)', correctAnswer: 'spielt' },
+    { id: 2, subject: 'Wir', blank: '... heute.', hint: '(lernen)', correctAnswer: 'lernen' },
+    { id: 3, subject: 'Sie', blank: '... gern.', hint: '(kaufen)', correctAnswer: 'kaufen' },
+    { id: 4, subject: 'Sie', blank: '...', hint: '(spielen)', correctAnswer: 'spielen' },
+    { id: 5, subject: 'Wir', blank: '...', hint: '(lernen)', correctAnswer: 'lernen' },
+    { id: 6, subject: 'Ihr', blank: '... heute.', hint: '(lernen)', correctAnswer: 'lernt' },
+    { id: 7, subject: 'Sie', blank: '... gern.', hint: '(spielen)', correctAnswer: 'spielt' },
+    { id: 8, subject: 'Ich', blank: '...', hint: '(machen)', correctAnswer: 'mache' },
+    { id: 9, subject: 'sie', blank: '...', hint: '(lernen)', correctAnswer: 'lernen' },
+    { id: 10, subject: 'Es', blank: '... gern.', hint: '(machen)', correctAnswer: 'macht' },
+    { id: 11, subject: 'Wir', blank: '...', hint: '(kaufen)', correctAnswer: 'kaufen' },
+    { id: 12, subject: 'Sie', blank: '...', hint: '(spielen)', correctAnswer: 'spielen' },
+    { id: 13, subject: 'Sie', blank: '...', hint: '(machen)', correctAnswer: 'macht' },
+    { id: 14, subject: 'sie', blank: '... gern.', hint: '(lernen)', correctAnswer: 'lernen' },
+    { id: 15, subject: 'Ihr', blank: '... heute.', hint: '(wohnen)', correctAnswer: 'wohnt' },
+    { id: 16, subject: 'Sie', blank: '...', hint: '(wohnen)', correctAnswer: 'wohnen' },
+    { id: 17, subject: 'Ihr', blank: '...', hint: '(lernen)', correctAnswer: 'lernt' },
+    { id: 18, subject: 'Ich', blank: '... gern.', hint: '(kaufen)', correctAnswer: 'kaufe' },
+    { id: 19, subject: 'Sie', blank: '...', hint: '(machen)', correctAnswer: 'machen' },
+    { id: 20, subject: 'Es', blank: '... gern.', hint: '(lernen)', correctAnswer: 'lernt' },
   ];
 
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
